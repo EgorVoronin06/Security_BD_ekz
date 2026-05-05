@@ -2,5 +2,5 @@
 
 Для запуска необходим docker и docker compose.
 
-Команда для сборки и запуска:______________________________ docker compose up --build
-Команда для удаления контейнеров и всех данных из бд:______ docker compose down -v
+Команда для сборки и запуска: docker compose up --build
+Команда для удаления контейнеров и всех данных из бд: docker compose down -v
