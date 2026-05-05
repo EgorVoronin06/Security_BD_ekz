@@ -1,0 +1,277 @@
+:root {
+	--bg: #f3efe5;
+	--panel: rgba(255, 252, 245, 0.92);
+	--ink: #1f1f1b;
+	--muted: #5f6358;
+	--line: rgba(31, 31, 27, 0.12);
+	--accent: #a03c2c;
+	--accent-2: #0f5c5c;
+	--warn: #6b241b;
+	--shadow: 0 24px 70px rgba(37, 28, 18, 0.12);
+	font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+	color: var(--ink);
+	background:
+		radial-gradient(circle at top left, rgba(160, 60, 44, 0.18), transparent 32%),
+		radial-gradient(circle at top right, rgba(15, 92, 92, 0.14), transparent 28%),
+		linear-gradient(180deg, #f7f2e8 0%, #efe7d7 100%);
+}
+
+html,
+body {
+	margin: 0;
+	min-height: 100%;
+}
+
+body {
+	min-height: 100vh;
+}
+
+a {
+	color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
+
+.shell {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 24px;
+}
+
+.topbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 32px;
+	padding: 18px 22px;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 24px;
+	box-shadow: var(--shadow);
+	backdrop-filter: blur(18px);
+}
+
+.brand h1,
+.brand p {
+	margin: 0;
+}
+
+.brand h1 {
+	font-size: clamp(1.8rem, 4vw, 2.8rem);
+	letter-spacing: -0.05em;
+}
+
+.brand p,
+.nav a,
+.meta {
+	color: var(--muted);
+}
+
+.nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.nav a {
+	text-decoration: none;
+	padding: 10px 14px;
+	border-radius: 999px;
+	border: 1px solid transparent;
+}
+
+.nav a:hover {
+	border-color: var(--line);
+	background: rgba(255, 255, 255, 0.6);
+}
+
+.grid {
+	display: grid;
+	gap: 18px;
+}
+
+.hero {
+	grid-template-columns: 2fr 1fr;
+	align-items: stretch;
+}
+
+.card,
+.note,
+.table-wrap,
+.form-panel {
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 24px;
+	box-shadow: var(--shadow);
+	padding: 22px;
+	backdrop-filter: blur(18px);
+}
+
+.hero-card {
+	display: grid;
+	gap: 18px;
+}
+
+.eyebrow {
+	display: inline-flex;
+	padding: 6px 10px;
+	border-radius: 999px;
+	background: rgba(160, 60, 44, 0.12);
+	color: var(--warn);
+	font-size: 0.85rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 12px;
+}
+
+.stat {
+	padding: 16px;
+	border-radius: 18px;
+	background: rgba(255, 255, 255, 0.7);
+	border: 1px solid var(--line);
+}
+
+.stat strong {
+	display: block;
+	font-size: 1.8rem;
+	letter-spacing: -0.06em;
+}
+
+.list {
+	display: grid;
+	gap: 12px;
+}
+
+.list article {
+	padding: 16px;
+	border-radius: 18px;
+	background: rgba(255, 255, 255, 0.62);
+	border: 1px solid var(--line);
+}
+
+.list h3,
+.list p,
+.card h2,
+.card p,
+.note h2,
+.note p {
+	margin: 0;
+}
+
+.list p,
+.note p,
+.table-wrap p,
+.form-panel p,
+li {
+	color: var(--muted);
+}
+
+.inline-form,
+.stack {
+	display: grid;
+	gap: 12px;
+}
+
+.inline-form {
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: end;
+}
+
+label {
+	display: grid;
+	gap: 6px;
+	font-weight: 600;
+}
+
+input,
+select,
+textarea {
+	padding: 12px 14px;
+	border-radius: 14px;
+	border: 1px solid var(--line);
+	background: rgba(255, 255, 255, 0.92);
+	color: var(--ink);
+}
+
+textarea {
+	min-height: 140px;
+}
+
+button {
+	padding: 12px 16px;
+	border: 0;
+	border-radius: 14px;
+	background: linear-gradient(135deg, var(--accent), #c06d27);
+	color: white;
+	cursor: pointer;
+	font-weight: 700;
+}
+
+button.secondary {
+	background: linear-gradient(135deg, var(--accent-2), #2d7d72);
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th,
+td {
+	padding: 12px 10px;
+	text-align: left;
+	border-bottom: 1px solid var(--line);
+	vertical-align: top;
+}
+
+th {
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--muted);
+}
+
+.hint,
+.sql-box code {
+	font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+}
+
+.sql-box {
+	padding: 14px;
+	border-radius: 18px;
+	background: #1f221f;
+	color: #f7f3e9;
+	overflow-x: auto;
+}
+
+.banner {
+	padding: 14px 16px;
+	border-radius: 18px;
+	border: 1px solid rgba(160, 60, 44, 0.18);
+	background: rgba(160, 60, 44, 0.08);
+	color: var(--warn);
+}
+
+@media (max-width: 840px) {
+	.hero {
+		grid-template-columns: 1fr;
+	}
+
+	.inline-form {
+		grid-template-columns: 1fr;
+	}
+}
+

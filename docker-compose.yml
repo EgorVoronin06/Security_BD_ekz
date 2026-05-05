@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    container_name: db-sec-lab-db
+    environment:
+      POSTGRES_DB: training_lab
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+      - ./db/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./db/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "hba_file=/etc/postgresql/pg_hba.conf"]
+
+  app:
+    build:
+      context: .
+    container_name: db-sec-lab-app
+    environment:
+      DATABASE_URL: postgresql://app_user:app_user@db:5432/training_lab
+      ORIGIN: http://localhost:3000
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

@@ -1,0 +1,5 @@
+.git
+.svelte-kit
+build
+node_modules
+npm-debug.log
