@@ -71,8 +71,8 @@ docker compose down -v
 ## Документация по уязвимостям
 
 <p align="center">
-  <img src="https://img.shields.io/badge/заданий-5-critical?style=flat-square" alt="5 заданий" />
-  <img src="https://img.shields.io/badge/SQL_Injection-2-red?style=flat-square" alt="2 SQLi" />
+  <img src="https://img.shields.io/badge/заданий-6-critical?style=flat-square" alt="6 заданий" />
+  <img src="https://img.shields.io/badge/SQL_Injection-3-red?style=flat-square" alt="3 SQLi" />
   <img src="https://img.shields.io/badge/Access_Control-3-orange?style=flat-square" alt="3 BAC" />
 </p>
 
@@ -82,6 +82,7 @@ docker compose down -v
 |:-:|----------|----------|-----|:---------:|
 | 1 | [**sql_injection_1.md**](./sql_injection_1.md) | [`/catalog`](http://localhost:3000/catalog) | SQL Injection | ⭐⭐ |
 | 2 | [**sql_injection_2.md**](./sql_injection_2.md) | [`/reports`](http://localhost:3000/reports) | SQL Injection (SECURITY DEFINER) | ⭐⭐⭐ |
+| 5 | [**sql_injection_5.md**](./sql_injection_5.md) | [`/reports`](http://localhost:3000/reports) | Error-based SQL Injection | ⭐⭐ |
 | 3 | [**sql_injection_3.md**](./sql_injection_3.md) | [`/profile`](http://localhost:3000/profile) | Privilege Escalation + IDOR | ⭐⭐ |
 | 4 | [**sql_injection_4.md**](./sql_injection_4.md) | [`/audit`](http://localhost:3000/audit) | Broken Access Control | ⭐ |
 | 6 | [**sql_injection_6.md**](./sql_injection_6.md) | [`/invoices/{id}`](http://localhost:3000/invoices/f11d0794-51d4-4824-8c4e-7d79c42f1275) | IDOR (чужие счета) | ⭐⭐ |
@@ -121,6 +122,24 @@ docker compose down -v
 | **Суть** | `EXECUTE format(...)` в функции `training.run_custom_report` |
 | **Payload** | `1=1` · `1=0 UNION SELECT username, password ...` |
 | **В отчёте** | Почему `$1` в Node.js не спасает · `SECURITY DEFINER` · исправление в БД |
+
+---
+
+### Задание 5 — error-based SQL-инъекция в отчётах
+
+<p>
+  <a href="./sql_injection_5.md">
+    <img src="https://img.shields.io/badge/📄_Открыть_отчёт-sql__injection__5.md-e11d48?style=for-the-badge" alt="sql_injection_5.md" />
+  </a>
+</p>
+
+| | |
+|---|---|
+| **Страница** | SQL Reports → `/reports` |
+| **Вектор** | `CAST((SELECT ...) AS int)` в WHERE fragment |
+| **Суть** | Данные утекают в текст ошибки PostgreSQL |
+| **Payload** | `version()` · `information_schema` · `SELECT password` |
+| **В отчёте** | Разбор `invalid input syntax for type integer` · скрытие `err.message` |
 
 ---
 
@@ -255,7 +274,8 @@ flowchart TB
 │   ├── lib/server/db.ts      # Запросы к БД
 │   └── routes/               # Страницы стенда
 ├── sql_injection_1.md        # Задание 1: /catalog
-├── sql_injection_2.md        # Задание 2: /reports
+├── sql_injection_2.md        # Задание 2: /reports (UNION)
+├── sql_injection_5.md        # Задание 5: /reports (error-based)
 ├── sql_injection_3.md        # Задание 3: /profile
 ├── sql_injection_4.md        # Задание 4: /audit
 ├── sql_injection_6.md        # Задание 6: /invoices/{id}
@@ -272,8 +292,9 @@ flowchart TB
 1️⃣  sql_injection_1.md  →  SQL-инъекция в поиске (проще всего)
 2️⃣  sql_injection_4.md  →  Аудит даёт подсказки к остальным
 3️⃣  sql_injection_2.md  →  Инъекция в хранимой функции
-4️⃣  sql_injection_3.md  →  Повышение привилегий через API
-5️⃣  sql_injection_6.md  →  IDOR чужих счетов по UUID
+4️⃣  sql_injection_5.md  →  Error-based: version, schema, password
+5️⃣  sql_injection_3.md  →  Повышение привилегий через API
+6️⃣  sql_injection_6.md  →  IDOR чужих счетов по UUID
 ```
 
 ---
