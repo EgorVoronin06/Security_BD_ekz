@@ -15,6 +15,7 @@
 
 <p align="center">
   <a href="#-быстрый-старт">Быстрый старт</a> •
+  <a href="#-алгоритм-практики">Алгоритм</a> •
   <a href="#-документация-по-уязвимостям">Документация</a> •
   <a href="#-карта-стенда">Карта стенда</a> •
   <a href="#-учётные-записи">Учётные записи</a>
@@ -50,12 +51,29 @@ docker compose down -v
 
 ---
 
+## Алгоритм практики
+
+<p align="center">
+  <a href="./algoritme.md">
+    <img src="https://img.shields.io/badge/📋_Полная_цепочка_атак-algoritme.md-1d4ed8?style=for-the-badge" alt="algoritme.md" />
+  </a>
+</p>
+
+Пошаговый сценарий от `alice (student)` до полного компромисса: **8 этапов**, все payload'ы, ожидаемые результаты, чеклист и mermaid-схема.
+
+```
+Этап 0: docker up → Этап 1: /audit → Этап 2: /catalog UNION ★
+→ Этап 3: /reports → Этап 4: /invoices IDOR → Этап 5: /profile admin
+```
+
+---
+
 ## Документация по уязвимостям
 
 <p align="center">
-  <img src="https://img.shields.io/badge/заданий-4-critical?style=flat-square" alt="4 задания" />
+  <img src="https://img.shields.io/badge/заданий-5-critical?style=flat-square" alt="5 заданий" />
   <img src="https://img.shields.io/badge/SQL_Injection-2-red?style=flat-square" alt="2 SQLi" />
-  <img src="https://img.shields.io/badge/Access_Control-2-orange?style=flat-square" alt="2 BAC" />
+  <img src="https://img.shields.io/badge/Access_Control-3-orange?style=flat-square" alt="3 BAC" />
 </p>
 
 ### Обзор заданий
@@ -66,6 +84,7 @@ docker compose down -v
 | 2 | [**sql_injection_2.md**](./sql_injection_2.md) | [`/reports`](http://localhost:3000/reports) | SQL Injection (SECURITY DEFINER) | ⭐⭐⭐ |
 | 3 | [**sql_injection_3.md**](./sql_injection_3.md) | [`/profile`](http://localhost:3000/profile) | Privilege Escalation + IDOR | ⭐⭐ |
 | 4 | [**sql_injection_4.md**](./sql_injection_4.md) | [`/audit`](http://localhost:3000/audit) | Broken Access Control | ⭐ |
+| 6 | [**sql_injection_6.md**](./sql_injection_6.md) | [`/invoices/{id}`](http://localhost:3000/invoices/f11d0794-51d4-4824-8c4e-7d79c42f1275) | IDOR (чужие счета) | ⭐⭐ |
 
 ---
 
@@ -141,6 +160,24 @@ docker compose down -v
 
 ---
 
+### Задание 6 — IDOR чужих счетов
+
+<p>
+  <a href="./sql_injection_6.md">
+    <img src="https://img.shields.io/badge/📄_Открыть_отчёт-sql__injection__6.md-0d9488?style=for-the-badge" alt="sql_injection_6.md" />
+  </a>
+</p>
+
+| | |
+|---|---|
+| **Страница** | Invoice demo → `/invoices/{uuid}` |
+| **Вектор** | Подмена UUID в URL |
+| **Суть** | Проверяется только вход, не владелец счёта |
+| **Эксплуатация** | alice открывает UUID счёта carol (`004f7c74-...`) |
+| **В отчёте** | Таблица UUID · проверка owner · RLS на `invoices` |
+
+---
+
 ## Карта стенда
 
 ```mermaid
@@ -159,14 +196,14 @@ flowchart TB
         C4["/audit<br/>📄 sql_injection_4.md"]
     end
 
-    subgraph extra["🟡 Связанные"]
-        INV["/invoices/id<br/>IDOR"]
+    subgraph extra["🟡 IDOR"]
+        C6["/invoices/id<br/>📄 sql_injection_6.md"]
     end
 
     LOGIN --> C1 & C2 & C3 & C4
     C4 -.->|подсказки| C1 & C2 & C3
     C1 -.->|UUID, пароли| C3
-    C2 -.->|счета| INV
+    C2 -.->|UUID счетов| C6
 ```
 
 ---
@@ -221,6 +258,8 @@ flowchart TB
 ├── sql_injection_2.md        # Задание 2: /reports
 ├── sql_injection_3.md        # Задание 3: /profile
 ├── sql_injection_4.md        # Задание 4: /audit
+├── sql_injection_6.md        # Задание 6: /invoices/{id}
+├── algoritme.md              # Полная цепочка практики (все этапы)
 ├── docker-compose.yml
 └── README.md
 ```
@@ -234,6 +273,7 @@ flowchart TB
 2️⃣  sql_injection_4.md  →  Аудит даёт подсказки к остальным
 3️⃣  sql_injection_2.md  →  Инъекция в хранимой функции
 4️⃣  sql_injection_3.md  →  Повышение привилегий через API
+5️⃣  sql_injection_6.md  →  IDOR чужих счетов по UUID
 ```
 
 ---
